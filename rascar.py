@@ -5,7 +5,7 @@ pin = [3,5,7,8]
 
 io.setmode(io.BOARD)
 for i in range(len(pin)):
-    io.setup(pin[i],io.out)
+    io.setup(pin[i],io.OUT)
 
 def forward():
     io.output(pin[0], True)
