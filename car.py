@@ -13,33 +13,35 @@ def forward():
     print "forward"
 
 #s
-def reverse():
+def back():
     io.output(pin[1], True)
-    print "reverse"
+    print "back"
 
 #a
 def left():
     io.output(pin[2], True)
-    time.sleep(0.1)
-    io.output(pin[2], False)
     print "left"
 
 #d
 def right():
     io.output(pin[3], True)
-    ime.sleep(0.1)
-    io.output(pin[2], False)
     print "right"
 
-#e
+def straight():
+    io.output(pin[2],False)
+    io.output(pin[3],False)
+
 def stop():
     for i in range(len(pin)):
-        io.output(pin[i],False)    
+	io.output(pin[i], False)	
 
-#x for exit
 def cleanup():
     stop()
     io.cleanup()
+
+forward()
+time.sleep(0.2)
+stop()
 
 if __name__ == "__main__":
     try:

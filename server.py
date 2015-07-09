@@ -2,51 +2,45 @@ import socket
 import sys
 import time
 from thread import *
-#import motor as motor
-import motorPWM as motor
+import car
 
 def stop():
     print "stop"
-    motor.stop()
+    car.stop()
 
 def forward(on):
     print "forward: %s" % on
     if on:
-        motor.forward()
+        car.forward()
     else:
-        motor.stop()
+        car.stop()
 
 def back(on):
     print "back: %s" % on
     if on:
-        motor.back()
+        car.back()
     else:
-        motor.stop()
+        car.stop()
 
 def left(on):
     print "left: %s" % on
     if on:
-        motor.left()
+        car.left()
     else:
-        motor.stop()
+        car.straight()
 
 def right(on):
     print "right: %s" % on
     if on:
-        motor.right()
+        car.right()
     else:
-        motor.stop()
-
-def speed(s):
-    print "speed: %s" % s
-    motor.setSpeed(s)
+        car.straight()
 
 # Set mapping between socket command name and function name
 armoptions = {'FF' : forward,
               'BB' : back,
               'LL' : left,
-              'RR' : right,
-              'SS' : speed}
+              'RR' : right}
 
 
 HOST = '' # Symbolic name meaning all available interfaces
@@ -83,7 +77,7 @@ def clientthread(conn):
         i = 0;
         cmd = ""
         while i < len(data):
-            # Look for the special case of arm stop
+            # Look for the special case of a stop
             if data[i] == '.':
                 stop()
                 i += 1
@@ -96,7 +90,7 @@ def clientthread(conn):
             if len(cmd) == 2:
                 param = True
                 if len(data) > i+1:
-                    # on/off cmd
+                    # on/off
                     if data[i+1] == '+':
                         param = True
                         i += 1
@@ -137,10 +131,10 @@ try:
 finally:
     print "Exiting"
     try:
-        arm.stop()  # Stop the arm if we get here in error
+        car.stop()  # Stop the car if we get here in error
     except:
         pass
     s.close()
     time.sleep(0.1) # wait a little for threads to finish
-    motor.cleanup()
+    car.cleanup()
 
